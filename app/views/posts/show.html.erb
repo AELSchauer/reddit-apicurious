@@ -1,1 +1,10 @@
-<h1><%= @post.title %></h1>
+<h2><%= @post.title %></h1>
+
+<ul>
+  <% @post.comments.each do |comment| %>
+    <%#= binding.pry %>
+    <li><%= comment["data"]["body"] %></li>
+    <%#= comment["data"]["replies"] %>
+    <%#= comment["data"]["replies"]["data"]["children"][0]["data"]["children"] %>
+  <% end %>
+</ul>
