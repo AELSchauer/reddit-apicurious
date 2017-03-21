@@ -14,6 +14,11 @@ class User < ApplicationRecord
     { link: response["link_karma"], comment: response["comment_karma"] }
   end
 
+  def trophies
+    response = @reddit_api.request("/api/v1/me/trophies")
+    response["data"]["trophies"]
+  end
+
   def subreddit_subscriptions
     response = reddit_api.request("/subreddits/mine/subscriber")
     subreddits = response["data"]["children"]
