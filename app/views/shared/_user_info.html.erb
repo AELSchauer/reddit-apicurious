@@ -1,0 +1,21 @@
+<h3>Karma</h3>
+<table>
+  <tr>
+    <th>Link:</th>
+    <td><%= @user.karma[:link] %></td>
+  </tr>
+  <tr>
+    <th>Comment:</th>
+    <td><%= @user.karma[:comment] %></td>
+  </tr>
+</table>
+
+<h3>Trophies</h3>
+<ul>
+  <% @user.trophies.each do |(name, icon)| %>
+    <li>
+      <%= image_tag icon, alt: name %>
+      <%= name %>
+    </li>
+  <% end %>
+</ul>

@@ -14,6 +14,15 @@ class User < ApplicationRecord
     { link: response["link_karma"], comment: response["comment_karma"] }
   end
 
+  def trophies
+    response = @reddit_api.request("/api/v1/me/trophies")
+    response["data"]["trophies"].reduce({}) do |trophy_hash, trophy|
+      trophy_name = trophy["data"]["name"]
+      trophy_icon = trophy["data"]["icon_40"]
+      trophy_hash.merge!(trophy_name => trophy_icon)
+    end
+  end
+
   def subreddit_subscriptions
     response = reddit_api.request("/subreddits/mine/subscriber")
     subreddits = response["data"]["children"]
