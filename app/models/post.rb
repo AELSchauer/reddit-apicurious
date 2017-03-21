@@ -8,6 +8,11 @@ class Post
     @reddit_api = RedditRequest.new(token)
   end
 
+  def text
+    response = @reddit_api.request("/r/#{@subreddit}/comments/#{id}")
+    response[0]["data"]["children"][0]["data"]["selftext_html"]
+  end
+
   def title
     response = @reddit_api.request("/r/#{@subreddit}/comments/#{id}")
     response[0]["data"]["children"][0]["data"]["title"]
@@ -15,7 +20,6 @@ class Post
 
   def comments
     response = @reddit_api.request("/r/#{@subreddit}/comments/#{id}")
-    binding.pry
-    response[1]["data"]["children"]
+    @comments = response[1]["data"]["children"].map { |comment_hash| Comment.new(comment_hash) }
   end
 end
