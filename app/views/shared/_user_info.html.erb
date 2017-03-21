@@ -12,10 +12,10 @@
 
 <h3>Trophies</h3>
 <ul>
-  <% @user.trophies.each do |trophy| %>
+  <% @user.trophies.each do |(name, icon)| %>
     <li>
-      <%= image_tag trophy["data"]["icon_40"], alt: trophy["data"]["name"] %>
-      <%= trophy["data"]["name"] %>
+      <%= image_tag icon, alt: name %>
+      <%= name %>
     </li>
   <% end %>
 </ul>
