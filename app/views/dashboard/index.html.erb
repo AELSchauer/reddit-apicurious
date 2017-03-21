@@ -1,1 +1,19 @@
 <h1>Welcome, <%= current_user.uid %>!</h1>
+<h3>Karma</h3>
+<table>
+  <tr>
+    <th>Link:</th>
+    <td><%= current_user.karma[:link] %></td>
+  </tr>
+  <tr>
+    <th>Comment:</th>
+    <td><%= current_user.karma[:comment] %></td>
+  </tr>
+</table>
+
+<h3>Subreddit Subscriptions</h3>
+<ul>
+  <% current_user.subreddit_subscriptions.each do |subreddit| %>
+    <li><%= subreddit %></li>
+  <% end %>
+</ul>

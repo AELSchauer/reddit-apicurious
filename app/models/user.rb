@@ -9,4 +9,15 @@ class User < ApplicationRecord
     user.update(token: token)
     user
   end
+
+  def karma
+    data = User.request(token, "/api/v1/me")
+    { link: data["link_karma"], comment: data["comment_karma"] }
+  end
+
+  def subreddit_subscriptions
+    response = User.request(token, "/subreddits/mine/subscriber")
+    subreddits = response["data"]["children"]
+    subreddits.map { |subreddit| subreddit["data"]["url"] }
+  end
 end
