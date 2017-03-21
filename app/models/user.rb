@@ -17,6 +17,6 @@ class User < ApplicationRecord
   def subreddit_subscriptions
     response = reddit_api.request("/subreddits/mine/subscriber")
     subreddits = response["data"]["children"]
-    subreddits.map { |subreddit| subreddit["data"]["url"][3..-2] }
+    subreddits.map { |subreddit| subreddit["data"]["url"][3..-2].downcase }
   end
 end
