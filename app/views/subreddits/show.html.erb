@@ -1,4 +1,4 @@
-<h1><%= @subreddit.title %></h1>
+<h1><%= @subreddit.display_name %></h1>
 
 <h2>Moderators</h2>
 <% @subreddit.moderators.each do |moderator| %>
@@ -19,6 +19,6 @@
     <li><%= link_to "Upvote", "#" %></li>
     <li><%= link_to "Downvote", "#" %></li>
     <li>Score: <%= post["data"]["score"] %></li>
-    <li><%= link_to "Comments", post_path(@subreddit.title, post["data"]["id"]) %></li>
+    <li><%#= link_to "Comments", post_path(@subreddit.title, post["data"]["id"]) %></li>
   </ul>
 <% end %>

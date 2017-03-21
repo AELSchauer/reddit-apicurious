@@ -1,26 +1,20 @@
-class Subreddit
-  attr_reader :title
+class Subreddit < OpenStruct
+  # attr_reader :reddit_api
 
-  def initialize(token, title)
-    @token = token
-    @title = title
-    @reddit_api = RedditRequest.new(token)
+  def self.service(token)
+    @reddit_api ||= RedditRequest.new(token)
   end
 
-  def rules
-    response = @reddit_api.request("/r/#{title}/about/rules")
-    response["rules"]
+  def self.build(token, display_name)
+    service(token)
+    data = {
+      rules: @reddit_api.subreddit_rules(display_name),
+      moderators: @reddit_api.subreddit_moderators(display_name),
+      hot_posts: @reddit_api.subreddit_hot_posts(display_name)
+    }
+    data.merge!(@reddit_api.subreddit_info(display_name))
+
+    Subreddit.new(data)
   end
 
-  def moderators
-    response = @reddit_api.request("/r/#{title}/about/moderators")
-    moderators = response["data"]["children"]
-    moderators.sort_by { |moderator| moderator["name"] }
-  end
-
-  def hot_posts
-    response = @reddit_api.request("/r/#{title}/hot")
-    articles = response["data"]["children"]
-    articles.find_all { |article| not article["data"]["stickied"] }[0..15]
-  end
 end

@@ -8,6 +8,10 @@ class Post
     @reddit_api = RedditRequest.new(token)
   end
 
+  def find_by_subreddit
+    
+  end
+
   def text
     response = @reddit_api.request("/r/#{@subreddit}/comments/#{id}")
     response[0]["data"]["children"][0]["data"]["selftext_html"]

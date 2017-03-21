@@ -26,6 +26,9 @@ class User < ApplicationRecord
   def subreddit_subscriptions
     response = reddit_api.request("/subreddits/mine/subscriber")
     subreddits = response["data"]["children"]
-    subreddits.map { |subreddit| subreddit["data"]["url"][3..-2].downcase }
+    subreddits.map do |subreddit|
+      subreddit_info = subreddit["data"].select { |key, value| ["id", "name", "url", "display_name", "subscribers"].include?(key) }
+      Subreddit.new(subreddit_info)
+    end
   end
 end
