@@ -1,24 +1,29 @@
 class ViewUser
-  attr_reader :username
+  attr_reader :comment_karma, :link_karma, :name, :trophies
 
-  def initialize(token, username)
-    @token = token
-    @username = username
-    @reddit_api = RedditRequest.new(token)
+  def initialize(params)
+    @comment_karma = params["comment_karma"]
+    @id            = params["id"]
+    @link_karma    = params["link_karma"]
+    @name          = params["name"]
+    @trophies      = params["trophies"]
   end
 
-  def karma
-    response = @reddit_api.request("/user/#{username}/about")
-    info = response["data"]
-    { link: info["link_karma"], comment: info["comment_karma"] }
+  def self.service(token)
+    @reddit_api ||= RedditRequest.new(token)
   end
 
-  def trophies
-    response = @reddit_api.request("/api/v1/user/#{username}/trophies")
-    response["data"]["trophies"].reduce({}) do |trophy_hash, trophy|
-      trophy_name = trophy["data"]["name"]
-      trophy_icon = trophy["data"]["icon_40"]
-      trophy_hash.merge!(trophy_name => trophy_icon)
-    end
+  def self.build(token, username)
+    service(token)
+    data = {
+      "trophies" => @reddit_api.user_trophies(username)
+    }
+    data.merge!(@reddit_api.user_info(username))
+
+    ViewUser.new(data)
+  end
+
+  def self.create_many(users)
+    users.map { |user_data| ViewUser.new(user_data) }
   end
 end
