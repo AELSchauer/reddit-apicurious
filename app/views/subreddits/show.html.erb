@@ -1,0 +1,24 @@
+<h1><%= @subreddit.title %></h1>
+
+<h2>Moderators</h2>
+<% @subreddit.moderators.each do |moderator| %>
+  <li><%= link_to moderator['name'], "#" %></li>
+<% end %>
+
+<h2>Rules</h2>
+<ol>
+  <% @subreddit.rules.each do |rule| %>
+    <li><%= rule['short_name'] %></li>
+  <% end %>
+</ol>
+
+<h2>Hot Posts</h2>
+<% @subreddit.hot_posts.each do |post| %>
+  <h3><%= link_to post['data']['title'], post['data']['url'] %></h3>
+  <ul>
+    <li><%= link_to "Upvote", "#" %></li>
+    <li><%= link_to "Downvote", "#" %></li>
+    <li>Score: <%= post['data']['score'] %></li>
+    <li><%= link_to "Comments", "#" %></li>
+  </ul>
+<% end %>

@@ -1,2 +1,2 @@
-<%= link_to 'Login', "https://www.reddit.com/api/v1/authorize?api_key&client_id=#{ENV['client_id']}&redirect_uri=#{ENV['redirect_uri']}&response_type=code&scope=identity,mysubreddits&state=RANDOM_STRING"
+<%= link_to 'Login', "https://www.reddit.com/api/v1/authorize?client_id=#{ENV['client_id']}&redirect_uri=#{ENV['redirect_uri']}&response_type=code&scope=identity,mysubreddits,read&state=RANDOM_STRING"
  %>

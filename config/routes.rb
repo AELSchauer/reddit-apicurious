@@ -7,4 +7,5 @@ Rails.application.routes.draw do
 
   resources :dashboard, only: :index
 
+  get '/r/:title' => "subreddits#show", :as => "subreddit"
 end
