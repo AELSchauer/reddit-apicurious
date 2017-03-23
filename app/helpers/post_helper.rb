@@ -1,5 +1,5 @@
 module PostHelper
-  def recursive_list_tag(comment)
+  def nested_comments_tag(comment)
       html = content_tag(:ul) {
         ul_contents = ""
 
@@ -11,7 +11,7 @@ module PostHelper
 
         comment.replies.each do |reply|
           unless reply.replies == []
-            ul_contents << recursive_list_tag(reply)
+            ul_contents << nested_comments_tag(reply)
           end
         end
 

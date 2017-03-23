@@ -3,5 +3,5 @@
 <%= @post.selftext.html_safe unless @post.selftext.nil? %>
 
 <% @post.comments.each do |comment| %>
-  <%= recursive_list_tag(comment) %>
+  <%= nested_comments_tag(comment) %>
 <% end %>
