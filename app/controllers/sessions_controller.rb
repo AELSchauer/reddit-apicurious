@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   def create
-    oauth = RedditOauth.new(login_params)
+    oauth = RedditOauthService.new(login_params)
     token = oauth.token
     data  = oauth.data
 

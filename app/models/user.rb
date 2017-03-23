@@ -6,7 +6,7 @@ class User < ApplicationRecord
   end
 
   def reddit_api
-    @reddit_api ||= RedditRequest.new(token)
+    @reddit_api ||= RedditRequestService.new(token)
   end
 
   def subreddit_subscriptions
