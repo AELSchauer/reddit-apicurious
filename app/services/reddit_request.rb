@@ -1,4 +1,4 @@
-class RedditRequest
+class RedditRequestService
   def initialize(token)
     @token = token
   end

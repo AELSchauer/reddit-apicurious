@@ -13,7 +13,7 @@ class Subreddit
   end
 
   def self.service(token)
-    @reddit_api ||= RedditRequest.new(token)
+    @reddit_api ||= RedditRequestService.new(token)
   end
 
   def self.build(token, display_name)
