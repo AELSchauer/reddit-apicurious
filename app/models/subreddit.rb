@@ -33,7 +33,7 @@ class Subreddit
   end
 
   def moderators
-    ViewUser.create_many
+    Redditor.create_many
   end
 
 end

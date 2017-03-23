@@ -1,4 +1,4 @@
-class ViewUser
+class Redditor
   attr_reader :comment_karma, :link_karma, :name, :trophies
 
   def initialize(params)
@@ -20,10 +20,10 @@ class ViewUser
     }
     data.merge!(@reddit_api.user_info(username))
 
-    ViewUser.new(data)
+    Redditor.new(data)
   end
 
   def self.create_many(users)
-    users.map { |user_data| ViewUser.new(user_data) }
+    users.map { |user_data| Redditor.new(user_data) }
   end
 end
