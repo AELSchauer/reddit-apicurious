@@ -1,4 +1,4 @@
-class RedditOauth
+class RedditOauthService
   def initialize(params)
     @code          = params[:code]
     @state         = params[:state]
