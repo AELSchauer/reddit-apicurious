@@ -33,7 +33,7 @@ class Subreddit
   end
 
   def moderators
-    Redditor.create_many
+    Redditor.create_many(@moderators)
   end
 
 end
