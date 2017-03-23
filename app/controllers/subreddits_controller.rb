@@ -1,5 +1,5 @@
 class SubredditsController < ApplicationController
   def show
-    @subreddit = Subreddit.new(current_user.token, params[:title])
+    @subreddit = Subreddit.build(current_user.token, params[:subreddit_name])
   end
 end

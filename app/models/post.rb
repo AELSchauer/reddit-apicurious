@@ -1,25 +1,38 @@
-class Post
-  attr_reader :subreddit, :id
+class Post < OpenStruct
+  attr_reader :author, :id, :parent_sub, :score, :selftext, :title, :url
 
-  def initialize(token, subreddit, id)
-    @token      = token
-    @subreddit  = subreddit
-    @id         = id
-    @reddit_api = RedditRequest.new(token)
+  def initialize(params)
+    @author       = params["author"]
+    @comments     = params["comments"]
+    @id           = params["id"]
+    @name         = params["name"]
+    @num_comments = params["num_comments"]
+    @score        = params["score"]
+    @selftext     = params["selftext_html"]
+    @parent_sub   = params["subreddit"]
+    @title        = params["title"]
+    @url          = params["url"]
   end
 
-  def text
-    response = @reddit_api.request("/r/#{@subreddit}/comments/#{id}")
-    response[0]["data"]["children"][0]["data"]["selftext_html"]
+  def self.service(token)
+    @reddit_api ||= RedditRequest.new(token)
   end
 
-  def title
-    response = @reddit_api.request("/r/#{@subreddit}/comments/#{id}")
-    response[0]["data"]["children"][0]["data"]["title"]
+  def self.build(token, display_name, post_id)
+    service(token)
+    data = {
+      "comments" => @reddit_api.post_comments(display_name, post_id)
+    }
+    data.merge!(@reddit_api.post_info(display_name, post_id))
+
+    Post.new(data)
+  end
+
+  def self.create_many(posts)
+    posts.map { |post| Post.new(post["data"]) }
   end
 
   def comments
-    response = @reddit_api.request("/r/#{@subreddit}/comments/#{id}")
-    @comments = response[1]["data"]["children"].map { |comment_hash| Comment.new(comment_hash) }
+    Comment.create_tree(@comments)
   end
 end

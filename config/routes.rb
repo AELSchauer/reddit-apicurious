@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   resources :dashboard, only: :index
 
-  get '/r/:title' => "subreddits#show", :as => "subreddit"
-  get '/r/:title/comments/:post_id' => "posts#show", :as => "post"
+  get '/r/:subreddit_name/comments/:post_id' => "posts#index", :as => "post"
+  get '/r/:subreddit_name' => "subreddits#show", :as => "subreddit"
   get '/user/:username' => "view_users#show", :as => "view_user"
 end

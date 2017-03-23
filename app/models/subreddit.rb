@@ -1,26 +1,39 @@
 class Subreddit
-  attr_reader :title
+  attr_reader :display_name, :rules, :url
 
-  def initialize(token, title)
-    @token = token
-    @title = title
-    @reddit_api = RedditRequest.new(token)
+  def initialize(params)
+    @display_name = params["display_name"]
+    @id           = params["id"]
+    @moderators   = params["moderators"]
+    @name         = params["name"]
+    @posts        = params["posts"]
+    @rules        = params["rules"]
+    @subscribers  = params["subscribers"]
+    @url          = params["url"]
   end
 
-  def rules
-    response = @reddit_api.request("/r/#{title}/about/rules")
-    response["rules"]
+  def self.service(token)
+    @reddit_api ||= RedditRequest.new(token)
+  end
+
+  def self.build(token, display_name)
+    service(token)
+    data = {
+      "rules" => @reddit_api.subreddit_rules(display_name),
+      "moderators" => @reddit_api.subreddit_moderators(display_name),
+      "posts" => @reddit_api.subreddit_hot_posts(display_name)
+    }
+    data.merge!(@reddit_api.subreddit_info(display_name))
+
+    Subreddit.new(data)
+  end
+
+  def posts
+    Post.create_many(@posts)
   end
 
   def moderators
-    response = @reddit_api.request("/r/#{title}/about/moderators")
-    moderators = response["data"]["children"]
-    moderators.sort_by { |moderator| moderator["name"] }
+    ViewUser.create_many
   end
 
-  def hot_posts
-    response = @reddit_api.request("/r/#{title}/hot")
-    articles = response["data"]["children"]
-    articles.find_all { |article| not article["data"]["stickied"] }[0..15]
-  end
 end

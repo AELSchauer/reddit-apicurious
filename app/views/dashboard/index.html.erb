@@ -1,10 +1,10 @@
-<h1>Welcome, <%= @user.uid %>!</h1>
+<h1>Welcome, <%= current_user.uid %>!</h1>
 
 <%= render "shared/user_info" %>
 
 <h3>Subreddit Subscriptions</h3>
 <ul>
-  <% @user.subreddit_subscriptions.each do |subreddit| %>
-    <li><%= link_to "/r/#{subreddit}", subreddit_path(subreddit) %></li>
+  <% current_user.subreddit_subscriptions.each do |subreddit| %>
+    <li><%= link_to subreddit.url, subreddit_path(subreddit.display_name) %></li>
   <% end %>
 </ul>
