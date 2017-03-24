@@ -15,9 +15,7 @@ class Redditor
 
   def self.build(token, username)
     service(token)
-    data = {
-      "trophies" => @reddit_api.user_trophies(username)
-    }
+    data = { "trophies" => @reddit_api.user_trophies(username) }
     data.merge!(@reddit_api.user_info(username))
 
     Redditor.new(data)
