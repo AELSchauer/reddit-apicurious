@@ -1,12 +1,12 @@
 class Comment
-  attr_reader :children, :id, :replies
+  attr_reader :author, :depth, :id, :score
 
   def initialize(params)
     @author   = params["author"]
     @body     = params["body"]
     @depth    = params["depth"]
     @id       = params["id"]
-    @replies  = get_replies(params)
+    @params   = params
     @score    = params["score"]
   end
 
@@ -18,27 +18,33 @@ class Comment
     false
   end
 
-  def visible_reply?(params)
-    params.keys.include?("replies") and not params["replies"].empty?
+  def has_replies?
+    !@params["replies"].empty?
   end
 
-  def hidden_reply?(params)
-    params.keys.include?("parent_id") and not params.keys.include?("replies")
+  def children
+    @params["replies"]["data"]["children"]
+  end
+
+  def children_visible?
+    children.first["kind"] == "t1"
   end
 
   def body
     @body.nil? ? "" : @body
   end
 
-  def get_replies(params)
-    replies = []
-    if visible_reply?(params)
-      params["replies"]["data"]["children"].each do |reply_hash|
-        replies << Comment.new(reply_hash["data"])
+  def replies
+    arr = []
+    if has_replies?
+      if children_visible?
+        children.each do |reply_hash|
+          arr << Comment.new(reply_hash["data"])
+        end
+      else
+        arr << Comment.new("body" => "")
       end
-    elsif hidden_reply?(params)
-      replies << Comment.new("id" => params["parent_id"], "body" => "")
     end
-    replies
+    arr
   end
 end

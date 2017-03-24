@@ -24,7 +24,8 @@ class RedditRequestService
 
   def user_subreddit_subscriptions
     response = request("/subreddits/mine/subscriber")
-    response["data"]["children"]
+    subscriptions = response["data"]["children"]
+    subscriptions.sort_by { |subscription| subscription["data"]["display_name"].downcase }
   end
 
   def subreddit_info(display_name)
@@ -40,11 +41,11 @@ class RedditRequestService
   def subreddit_moderators(display_name)
     response = request("/r/#{display_name}/about/moderators")
     moderators = response["data"]["children"]
-    moderators.sort_by { |moderator| moderator["name"] }
+    moderators.sort_by { |moderator| moderator["name"].downcase }
   end
 
-  def subreddit_hot_posts(display_name)
-    response = request("/r/#{display_name}/hot")
+  def subreddit_posts(display_name, post_type)
+    response = request("/r/#{display_name}/#{post_type}")
     articles = response["data"]["children"]
     articles.find_all { |article| not article["data"]["stickied"] }
   end

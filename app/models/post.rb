@@ -1,5 +1,6 @@
 class Post < OpenStruct
-  attr_reader :author, :id, :parent_sub, :score, :selftext, :title, :url
+  attr_reader :author, :id, :num_comments, :parent_sub,
+              :score, :selftext, :title, :url
 
   def initialize(params)
     @author       = params["author"]
@@ -20,9 +21,7 @@ class Post < OpenStruct
 
   def self.build(token, display_name, post_id)
     service(token)
-    data = {
-      "comments" => @reddit_api.post_comments(display_name, post_id)
-    }
+    data = { "comments" => @reddit_api.post_comments(display_name, post_id) }
     data.merge!(@reddit_api.post_info(display_name, post_id))
 
     Post.new(data)

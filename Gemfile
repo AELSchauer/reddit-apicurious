@@ -37,6 +37,12 @@ gem 'omniauth'
 gem 'httparty'
 gem 'figaro'
 
+group :test do
+  gem 'vcr'
+  gem 'webmock'
+  gem 'simplecov'
+end
+
 group :development, :test do
   gem 'pry'
   gem 'factory_girl_rails'

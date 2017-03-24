@@ -16,12 +16,12 @@ class Subreddit
     @reddit_api ||= RedditRequestService.new(token)
   end
 
-  def self.build(token, display_name)
+  def self.build(token, display_name, post_type="hot")
     service(token)
     data = {
       "rules" => @reddit_api.subreddit_rules(display_name),
       "moderators" => @reddit_api.subreddit_moderators(display_name),
-      "posts" => @reddit_api.subreddit_hot_posts(display_name)
+      "posts" => @reddit_api.subreddit_posts(display_name, post_type)
     }
     data.merge!(@reddit_api.subreddit_info(display_name))
 
